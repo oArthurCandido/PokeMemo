@@ -1,11 +1,10 @@
 "use client";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
+import CN from "classnames";
 
 const GameBox = () => {
-  const [cards, setCards] = useState([
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-  ]);
+  const [cards, setCards] = useState();
   const [playCards, setPlayCards] = useState({
     1: true,
     2: true,
@@ -30,6 +29,22 @@ const GameBox = () => {
   const [counter, setCounter] = useState(3);
 
   let round = 0;
+
+  const createDeck = () => {
+    let newDeck = Array.from({ length: 10 }, () =>
+      Math.floor(Math.random() * 1000)
+    );
+    let newSet = {};
+    newDeck.map((elem) => (newSet[elem] = true));
+    newDeck = [...newDeck, ...newDeck];
+    setCards(newDeck);
+    setPlayCards(newSet);
+    return newDeck;
+  };
+
+  useEffect(() => {
+    setCards(createDeck());
+  }, []);
 
   const checkIsRight = (elem, index) => {
     if (selected == index) {
@@ -108,18 +123,7 @@ const GameBox = () => {
 
   const handleNewGame = () => {
     setWinner(false);
-    setCards([1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-    setPlayCards({
-      1: true,
-      2: true,
-      3: true,
-      4: true,
-      5: true,
-      6: true,
-      7: true,
-      8: true,
-      9: true,
-    });
+    setCards(createDeck());
     setElem1(-1);
     setElem2(-1);
     setSelected(-1);
@@ -132,7 +136,7 @@ const GameBox = () => {
   };
 
   useEffect(() => {
-    if (win == 9) {
+    if (win == 10) {
       setWinner(true);
       setStart(false);
     }
@@ -164,62 +168,56 @@ const GameBox = () => {
   }
 
   return (
-    <div className="flex flex-col justify-evenly h-screen ">
-      <div className=" flex justify-between mt-2">
+    <div className="flex flex-col h-screen justify-evenly">
+      <div className="flex justify-between mt-2 ">
         <div>Don`t panic</div>
-        <div className="mr-2 w-36 flex justify-between ">
-          <p className="flex flex-col items-center justify-center border border-slate-400 p-2 rounded-md">
+        <div className="flex justify-between mr-2 w-36 ">
+          <p className="flex flex-col items-center justify-center p-2 border rounded-md border-slate-400">
             Moves <span>{moves}</span>
-          </p>{" "}
-          <p className="flex flex-col items-center justify-center border border-slate-400 p-2 rounded-md">
+          </p>
+          <p className="flex flex-col items-center justify-center p-2 border rounded-md border-slate-400">
             Clock <span>{start ? Math.floor(clock / 10) : "0"}s</span>
           </p>
         </div>
       </div>
-      <div className=" flex flex-wrap mx-2 items-center justify-evenly">
-        {cards.map((elem, index) => (
+      <div className="flex flex-wrap items-center max-w-5xl mx-auto justify-evenly">
+        {cards?.map((elem, index) => (
           <button
             onClick={() => handleSelect(index, elem)}
-            className={`${
-              selected == index || selected2 == index
-                ? `bg-slate-900 border border-slate-900 text-white [transform:rotateY(180deg)] shadow-[-2px_2px_4px_2px_rgba(0,0,0,0.5)]`
-                : ``
-            }  ${
-              playCards[elem] && selected != index && selected2 != index
-                ? "[transform:rotateY(180deg)] bg-slate-800 text-white "
-                : ""
-            } 
-            ${
-              !playCards[elem] && selected != index && selected2 != index
-                ? "    shadow-[-2px_2px_4px_2px_rgba(0,0,0,0.3)]"
-                : ""
-            } 
-            transition-all   duration-500 h-32 w-[14%]  sm:text-5xl sm:w-[15%] rounded-md text-center flex items-center justify-center cursor-pointer text-4xl font-bold border border-slate-600 m-1 overflow-hidden object-scale-down`}
             key={index}
+            className={CN(
+              "transition-all   duration-500 h-20 w-[20%]  sm:text-5xl sm:w-[20%] sm:h-28 rounded-md text-center flex items-center justify-center cursor-pointer text-4xl font-bold border border-slate-600 m-1 overflow-hidden ",
+              {
+                "dark:bg-slate-600 bg-slate-800 border border-slate-900 text-white [transform:rotateY(180deg)] shadow-[-2px_2px_4px_2px_rgba(0,0,0,0.5)] dark:shadow-[-2px_2px_4px_2px_rgba(250,250,250,0.3)]":
+                  selected == index || selected2 == index,
+              },
+              {
+                "[transform:rotateY(180deg)] bg-slate-50 dark:bg-slate-800 text-white":
+                  playCards[elem] && selected != index && selected2 != index,
+              },
+              {
+                "  shadow-[-2px_2px_4px_2px_rgba(0,0,0,0.3)]":
+                  !playCards[elem] && selected != index && selected2 != index,
+              }
+            )}
           >
-            <p
-              className={`${
-                !playCards[elem] && selected != index && selected2 != index
-                  ? ``
-                  : `[transform:rotateY(180deg)]`
-              } `}
-            >
-              {!playCards[elem] && selected != index && selected2 != index ? (
-                `X`
-              ) : (
-                <Image
-                  alt="pokemon image"
-                  width={100}
-                  height={100}
-                  className="w-full h-full"
-                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${elem}.png`}
-                />
-              )}
-            </p>
+            {!playCards[elem] && selected != index && selected2 != index ? (
+              <p>X</p>
+            ) : (
+              <Image
+                loading="lazy"
+                alt="pokemon image"
+                width={600}
+                height={600}
+                blurDataURL={true}
+                className="object-contain max-w-full max-h-full "
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${elem}.png`}
+              />
+            )}
           </button>
         ))}
       </div>
-      <div id="buttons" className=" w-full flex justify-center">
+      <div id="buttons" className="flex justify-center w-full ">
         <button
           onClick={handleShuffle}
           className={`${isLoading ? `bg-green-500` : `bg-slate-300`} ${
@@ -231,7 +229,7 @@ const GameBox = () => {
         </button>
         {start && (
           <button
-            className="border w-40 bg-red-400  border-slate-500 p-2 rounded-md"
+            className="w-40 p-2 bg-red-400 border rounded-md border-slate-500"
             onClick={handleNewGame}
           >
             Reset
