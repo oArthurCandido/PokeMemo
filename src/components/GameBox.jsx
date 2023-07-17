@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import React, { useState, useEffect } from "react";
 
 const GameBox = () => {
@@ -54,7 +55,7 @@ const GameBox = () => {
         setElem2(-1);
         setMoves((prev) => prev + 1);
       }
-    }, 400);
+    }, 600);
   };
 
   const handleSelect = (index, elem) => {
@@ -98,6 +99,10 @@ const GameBox = () => {
       setWin(0);
       setMoves(0);
       setClock(0);
+      setElem1(-1);
+      setElem2(-1);
+      setSelected(-1);
+      setSelected2(-1);
     }, 3000);
   };
 
@@ -176,10 +181,20 @@ const GameBox = () => {
           <button
             onClick={() => handleSelect(index, elem)}
             className={`${
-              selected == index || selected2 == index || playCards[elem]
-                ? `bg-slate-900 border border-slate-900 text-white [transform:rotateY(180deg)]`
+              selected == index || selected2 == index
+                ? `bg-slate-900 border border-slate-900 text-white [transform:rotateY(180deg)] shadow-[-2px_2px_4px_2px_rgba(0,0,0,0.5)]`
                 : ``
-            }   transition-all duration-500 h-32 w-[14%] sm:text-5xl sm:w-[15%] rounded-md text-center flex items-center justify-center cursor-pointer text-4xl font-bold border border-slate-600 m-1`}
+            }  ${
+              playCards[elem] && selected != index && selected2 != index
+                ? "[transform:rotateY(180deg)] bg-slate-800 text-white "
+                : ""
+            } 
+            ${
+              !playCards[elem] && selected != index && selected2 != index
+                ? "    shadow-[-2px_2px_4px_2px_rgba(0,0,0,0.3)]"
+                : ""
+            } 
+            transition-all   duration-500 h-32 w-[14%]  sm:text-5xl sm:w-[15%] rounded-md text-center flex items-center justify-center cursor-pointer text-4xl font-bold border border-slate-600 m-1 overflow-hidden object-scale-down`}
             key={index}
           >
             <p
@@ -189,9 +204,17 @@ const GameBox = () => {
                   : `[transform:rotateY(180deg)]`
               } `}
             >
-              {!playCards[elem] && selected != index && selected2 != index
-                ? `X`
-                : elem}
+              {!playCards[elem] && selected != index && selected2 != index ? (
+                `X`
+              ) : (
+                <Image
+                  alt="pokemon image"
+                  width={100}
+                  height={100}
+                  className="w-full h-full"
+                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${elem}.png`}
+                />
+              )}
             </p>
           </button>
         ))}
