@@ -38,7 +38,6 @@ const GameBox = () => {
     }
     setTimeout(() => {
       if (elem1 == elem) {
-        console.log(`passei aqui acerto`);
         const momCards = playCards;
         momCards[elem] = true;
         setPlayCards(momCards);
@@ -49,7 +48,6 @@ const GameBox = () => {
         setWin(win + 1);
         setMoves((prev) => prev + 1);
       } else {
-        console.log(`passei aqui erro`, elem1, elem);
         setSelected(-1);
         setSelected2(-1);
         setElem1(-1);
@@ -60,15 +58,11 @@ const GameBox = () => {
   };
 
   const handleSelect = (index, elem) => {
-    console.log(`in'icio`);
-
     if (selected === -1) {
-      console.log(`set1`);
       setSelected(index);
       setElem1(elem);
       round++;
     } else {
-      console.log(`set2`);
       setSelected2(index);
       setElem2(elem);
       round = 2;
@@ -141,7 +135,7 @@ const GameBox = () => {
       if (start) {
         setClock((prev) => prev + 1);
       }
-    }, 100);
+    }, 200);
   }, [win, clock, start, counter]);
 
   useEffect(() => {
