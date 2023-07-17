@@ -7,17 +7,7 @@ import "./microstyle.css";
 
 const GameBox = () => {
   const [cards, setCards] = useState();
-  const [playCards, setPlayCards] = useState({
-    1: true,
-    2: true,
-    3: true,
-    4: true,
-    5: true,
-    6: true,
-    7: true,
-    8: true,
-    9: true,
-  });
+  const [playCards, setPlayCards] = useState({});
   const [selected, setSelected] = useState(-1);
   const [selected2, setSelected2] = useState(-1);
   const [elem1, setElem1] = useState(-1);
@@ -169,17 +159,42 @@ const GameBox = () => {
 
   if (winner === true) {
     return (
-      <div className="flex flex-col items-center justify-center w-full h-screen text-xl transition-opacity duration-700">
-        <p>Parabéns, você conseguiu!</p>
-        <p>
-          Foram {clock} segundos e {moves} movimentos.
-        </p>
-        <button
-          className="p-2 mt-2 bg-green-300 border border-green-800 rounded-md text-slate-900"
-          onClick={handleNewGame}
-        >
-          Jogar novamente
-        </button>
+      <div className="h-screen">
+        <div className="flex justify-around w-full max-w-2xl m-auto mt-2 h-fit ">
+          <h1 className="text-4xl font-extrabold text-yellow-500 drop-shadow-2xl poke">
+            Poke<span className="memo">Memo</span>
+          </h1>
+          <div className="flex justify-between mr-2 w-36 ">
+            <p className="flex items-center justify-center p-2 text-sm font-semibold border rounded-md border-slate-400">
+              {moves}
+            </p>
+            <p className="flex items-center justify-center p-2 text-sm font-semibold border rounded-md border-slate-400">
+              Tempo:{" "}
+              <span className="w-10">
+                {start
+                  ? ` ${Math.floor(clock / 60)
+                      .toString()
+                      .padStart(2, "0")}:${(clock % 60)
+                      .toString()
+                      .padStart(2, "0")}`
+                  : "00:00"}
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center justify-center w-full h-full text-xl transition-opacity duration-700">
+          <p>Parabéns, você conseguiu!</p>
+          <p>
+            Foram {clock} segundos e {moves} movimentos.
+          </p>
+          <button
+            className="p-2 mt-2 bg-green-300 border border-green-800 rounded-md text-slate-900"
+            onClick={handleNewGame}
+          >
+            Jogar novamente
+          </button>
+        </div>
       </div>
     );
   }
@@ -191,7 +206,7 @@ const GameBox = () => {
           Poke<span className="memo">Memo</span>
         </h1>
         <div className="flex justify-between mr-2 w-36 ">
-          <p className="flex flex-col items-center justify-center p-2 border rounded-md border-slate-400">
+          <p className="flex flex-col items-center justify-center p-2 text-sm font-semibold border rounded-md border-slate-400">
             <span>{moves}</span>
           </p>
           <p className="flex items-center justify-center p-2 text-sm font-semibold border rounded-md border-slate-400">
