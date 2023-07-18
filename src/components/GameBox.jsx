@@ -208,7 +208,7 @@ const GameBox = () => {
   }
 
   return (
-    <div className="box-border flex flex-col items-center justify-between h-full">
+    <div className="box-border flex flex-col items-center justify-between h-[100vh] max-h-screen">
       <div className="flex justify-around w-full max-w-2xl m-auto mt-2 h-fit ">
         <h1 className="text-4xl font-extrabold text-yellow-500 drop-shadow-2xl poke">
           Poke<span className="memo">Memo</span>

@@ -28,7 +28,7 @@ const CardButton = ({
       onClick={() => handleSelect(index, elem)}
       key={index}
       className={CN(
-        "transition-all duration-500 h-[16%] w-[20%]  sm:text-5xl md:w-[23%] 2xl:h-32 rounded-md text-center flex items-center justify-center cursor-pointer text-4xl font-bold border border-slate-600  overflow-hidden m-1",
+        "transition-all duration-500 portrait:w-[22%] portrait:h-28 portrait:max-h-[18%] rounded-md text-center flex items-center justify-center cursor-pointer text-4xl font-bold border border-slate-600  overflow-hidden m-1",
         {
           "dark:bg-slate-100 bg-slate-800 border border-slate-900 text-white [transform:rotateY(180deg)] shadow-[-2px_2px_4px_2px_rgba(0,0,0,0.5)] dark:shadow-[-2px_2px_4px_2px_rgba(250,250,250,0.3)]":
             selected == index || selected2 == index,
