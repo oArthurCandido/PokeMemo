@@ -25,11 +25,18 @@ const GameBox = () => {
   let round = 0;
 
   const createDeck = () => {
-    let newDeck = Array.from({ length: 10 }, () =>
-      Math.floor(Math.random() * 500)
+    let newDeck = Array.from(
+      { length: 10 },
+      () => Math.floor(Math.random() * 990) + 1
     );
     let newSet = {};
     newDeck.map((elem) => (newSet[elem] = true));
+    newDeck = Array.from(new Set(newDeck));
+    while (newDeck.length < 10) {
+      newDeck.sort((a, b) => a - b);
+      newDeck.push(newDeck[newDeck.length - 1] + 1);
+    }
+    console.log(newDeck);
     newDeck = [...newDeck, ...newDeck];
     setCards(newDeck);
     setPlayCards(newSet);
@@ -200,7 +207,7 @@ const GameBox = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-between h-screen">
+    <div className="box-border flex flex-col items-center justify-between h-full">
       <div className="flex justify-around w-full max-w-2xl m-auto mt-2 h-fit ">
         <h1 className="text-4xl font-extrabold text-yellow-500 drop-shadow-2xl poke">
           Poke<span className="memo">Memo</span>
@@ -229,7 +236,7 @@ const GameBox = () => {
             onClick={() => handleSelect(index, elem)}
             key={index}
             className={CN(
-              "transition-all duration-500 h-24 w-[20%]  sm:text-5xl md:w-[23%] md:h-32 rounded-md text-center flex items-center justify-center cursor-pointer text-4xl font-bold border border-slate-600  overflow-hidden m-1",
+              "transition-all duration-500 h-24 w-[20%]  sm:text-5xl xl:w-[23%] xl:h-28 rounded-md text-center flex items-center justify-center cursor-pointer text-4xl font-bold border border-slate-600  overflow-hidden m-1",
               {
                 "dark:bg-slate-100 bg-slate-800 border border-slate-900 text-white [transform:rotateY(180deg)] shadow-[-2px_2px_4px_2px_rgba(0,0,0,0.5)] dark:shadow-[-2px_2px_4px_2px_rgba(250,250,250,0.3)]":
                   selected == index || selected2 == index,
@@ -281,7 +288,7 @@ const GameBox = () => {
           </button>
         ))}
       </div>
-      <div id="buttons" className="flex justify-center w-full ">
+      <div id="buttons" className="flex justify-center w-full mb-2 ">
         <button
           onClick={handleShuffle}
           className={`${isLoading ? `bg-green-500` : `bg-slate-300`} ${
