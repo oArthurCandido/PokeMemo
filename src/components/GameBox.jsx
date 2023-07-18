@@ -26,11 +26,18 @@ const GameBox = () => {
   let round = 0;
 
   const createDeck = () => {
-    let newDeck = Array.from({ length: 10 }, () =>
-      Math.floor(Math.random() * 500)
+    let newDeck = Array.from(
+      { length: 10 },
+      () => Math.floor(Math.random() * 990) + 1
     );
     let newSet = {};
     newDeck.map((elem) => (newSet[elem] = true));
+    newDeck = Array.from(new Set(newDeck));
+    while (newDeck.length < 10) {
+      newDeck.sort((a, b) => a - b);
+      newDeck.push(newDeck[newDeck.length - 1] + 1);
+    }
+    console.log(newDeck);
     newDeck = [...newDeck, ...newDeck];
     setCards(newDeck);
     setPlayCards(newSet);
@@ -201,7 +208,7 @@ const GameBox = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-between h-screen">
+    <div className="box-border flex flex-col items-center justify-between h-full">
       <div className="flex justify-around w-full max-w-2xl m-auto mt-2 h-fit ">
         <h1 className="text-4xl font-extrabold text-yellow-500 drop-shadow-2xl poke">
           Poke<span className="memo">Memo</span>
@@ -239,7 +246,7 @@ const GameBox = () => {
           />
         ))}
       </div>
-      <div id="buttons" className="flex justify-center w-full ">
+      <div id="buttons" className="flex justify-center w-full mb-2 ">
         <button
           onClick={handleShuffle}
           className={`${isLoading ? `bg-green-500` : `bg-slate-300`} ${
