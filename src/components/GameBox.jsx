@@ -1,10 +1,7 @@
 "use client";
-import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import CN from "classnames";
-import BackCard from "./Shapes/BackCard";
 import "./microstyle.css";
-import CardButton from "@/components/ui/CardButton";
 import Header from "./ui/Header";
 import ControlButtons from "./ui/ControlButtons";
 import CardsBox from "./ui/CardsBox";
@@ -26,8 +23,6 @@ const GameBox = () => {
   const [clock, setClock] = useState(0);
   const [counter, setCounter] = useState(3);
   const [celebrate, setCelebrate] = useState(false);
-
-  let round = 0;
 
   const createDeck = () => {
     let newDeck = Array.from(
@@ -83,6 +78,7 @@ const GameBox = () => {
   };
 
   const handleSelect = (index, elem) => {
+    let round = 0;
     if (!start) {
       alert("Clique em Start! para começar.");
       return;
@@ -96,14 +92,12 @@ const GameBox = () => {
     if (selected === -1) {
       setSelected(index);
       setElem1(elem);
-      round++;
     } else {
       setSelected2(index);
       setElem2(elem);
       round = 2;
     }
     if (round == 2) {
-      round = 0;
       checkIsRight(elem, index);
     }
   };
