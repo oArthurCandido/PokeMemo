@@ -3,13 +3,11 @@ import CardButton from "./CardButton";
 
 type CardsProps = {
   handleSelect: (index: number, elem: any) => void;
-  cardsDictionary: { [key: string]: string };
+  cardsDictionary: { [key: number]: boolean };
   selected: number;
   selected2: number;
   getIt: boolean;
   celebrate: boolean;
-  index: number;
-  elem: any;
   isLoading: boolean;
   cards: Array<number>;
 };
@@ -21,8 +19,6 @@ const CardsBox = ({
   selected2,
   getIt,
   celebrate,
-  index,
-  elem,
   isLoading,
   cards,
 }: CardsProps) => {

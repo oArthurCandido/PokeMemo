@@ -4,7 +4,7 @@ import Image from "next/image";
 
 type CardProps = {
   handleSelect: (index: number, elem: any) => void;
-  cardsDictionary: { [key: string]: string };
+  cardsDictionary: { [key: number]: boolean };
   selected: number;
   selected2: number;
   getIt: boolean;
