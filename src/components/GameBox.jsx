@@ -5,22 +5,26 @@ import CN from "classnames";
 import BackCard from "./Shapes/BackCard";
 import "./microstyle.css";
 import CardButton from "@/components/ui/CardButton";
+import Header from "./ui/Header";
+import ControlButtons from "./ui/ControlButtons";
+import CardsBox from "./ui/CardsBox";
+import GameResult from "./ui/GameResult";
 
 const GameBox = () => {
   const [cards, setCards] = useState();
-  const [playCards, setPlayCards] = useState({});
+  const [cardsDictionary, setCardsDictionary] = useState({});
   const [selected, setSelected] = useState(-1);
   const [selected2, setSelected2] = useState(-1);
   const [elem1, setElem1] = useState(-1);
   const [elem2, setElem2] = useState(-1);
-  const [win, setWin] = useState(0);
-  const [winner, setWinner] = useState(false);
+  const [points, setPoints] = useState(0);
+  const [getIt, setGetIt] = useState(false);
+  const [champion, setChampion] = useState(false);
   const [start, setStart] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [moves, setMoves] = useState(0);
   const [clock, setClock] = useState(0);
   const [counter, setCounter] = useState(3);
-  const [getIt, setGetIt] = useState(false);
   const [celebrate, setCelebrate] = useState(false);
 
   let round = 0;
@@ -37,10 +41,9 @@ const GameBox = () => {
       newDeck.sort((a, b) => a - b);
       newDeck.push(newDeck[newDeck.length - 1] + 1);
     }
-    console.log(newDeck);
     newDeck = [...newDeck, ...newDeck];
     setCards(newDeck);
-    setPlayCards(newSet);
+    setCardsDictionary(newSet);
     return newDeck;
   };
 
@@ -57,17 +60,17 @@ const GameBox = () => {
     if (elem1 == elem) {
       setGetIt(true);
       setTimeout(() => {
-        const momCards = playCards;
+        const momCards = cardsDictionary;
         momCards[elem] = true;
-        setPlayCards(momCards);
+        setCardsDictionary(momCards);
         setSelected(-1);
         setSelected2(-1);
         setElem1(-1);
         setElem2(-1);
-        setWin(win + 1);
+        setPoints(points + 1);
         setMoves((prev) => prev + 1);
         setGetIt(false);
-      }, 600);
+      }, 300);
     } else {
       setTimeout(() => {
         setSelected(-1);
@@ -84,7 +87,10 @@ const GameBox = () => {
       alert("Clique em Start! para começar.");
       return;
     }
-    if (playCards[elem]) {
+    if (selected == index || selected2 != -1) {
+      return;
+    }
+    if (cardsDictionary[elem]) {
       return;
     }
     if (selected === -1) {
@@ -111,10 +117,10 @@ const GameBox = () => {
     }
     setCards(provList);
     setTimeout(() => {
-      setPlayCards({});
+      setCardsDictionary({});
       setIsLoading(false);
       setStart(true);
-      setWin(0);
+      setPoints(0);
       setMoves(0);
       setClock(0);
       setElem1(-1);
@@ -125,13 +131,13 @@ const GameBox = () => {
   };
 
   const handleNewGame = () => {
-    setWinner(false);
+    setChampion(false);
+    setStart(false);
     setElem1(-1);
     setElem2(-1);
     setSelected(-1);
     setSelected2(-1);
-    setWin(0);
-    setStart(false);
+    setPoints(0);
     setMoves(0);
     setClock(0);
     setCounter(3);
@@ -147,15 +153,15 @@ const GameBox = () => {
   }, [start, clock, celebrate]);
 
   useEffect(() => {
-    if (win === 10) {
+    if (points === 10) {
       setCelebrate(true);
       setTimeout(() => {
-        setWinner(true);
+        setChampion(true);
         setStart(false);
         setCelebrate(false);
       }, 5000);
     }
-  }, [win]);
+  }, [points]);
 
   useEffect(() => {
     if (isLoading) {
@@ -165,106 +171,42 @@ const GameBox = () => {
     }
   }, [counter, isLoading]);
 
-  if (winner === true) {
+  if (champion === true) {
     return (
-      <div className="h-screen">
-        <div className="flex justify-around w-full max-w-2xl m-auto mt-2 h-fit ">
-          <h1 className="text-4xl font-extrabold text-yellow-500 drop-shadow-2xl poke">
-            Poke<span className="memo">Memo</span>
-          </h1>
-          <div className="flex justify-between mr-2 w-36 ">
-            <p className="flex items-center justify-center p-2 text-sm font-semibold border rounded-md border-slate-400">
-              {moves}
-            </p>
-            <p className="flex items-center justify-center p-2 text-sm font-semibold border rounded-md border-slate-400">
-              Tempo:{" "}
-              <span className="w-10">
-                {start
-                  ? ` ${Math.floor(clock / 60)
-                      .toString()
-                      .padStart(2, "0")}:${(clock % 60)
-                      .toString()
-                      .padStart(2, "0")}`
-                  : "00:00"}
-              </span>
-            </p>
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center justify-center w-full h-full text-xl transition-opacity duration-700">
-          <p>Parabéns, você conseguiu!</p>
-          <p>
-            Foram {clock} segundos e {moves} movimentos.
-          </p>
-          <button
-            className="p-2 mt-2 bg-green-300 border border-green-800 rounded-md text-slate-900"
-            onClick={handleNewGame}
-          >
-            Jogar novamente
-          </button>
-        </div>
-      </div>
+      <GameResult
+        handleNewGame={handleNewGame}
+        start={start}
+        clock={clock}
+        moves={moves}
+      />
     );
   }
 
   return (
-    <div className="box-border flex flex-col items-center justify-between h-[100vh] max-h-screen">
-      <div className="flex justify-around w-full max-w-2xl m-auto mt-2 h-fit ">
-        <h1 className="text-4xl font-extrabold text-yellow-500 drop-shadow-2xl poke">
-          Poke<span className="memo">Memo</span>
-        </h1>
-        <div className="flex justify-between mr-2 w-36 ">
-          <p className="flex flex-col items-center justify-center p-2 text-sm font-semibold border rounded-md border-slate-400">
-            <span>{moves}</span>
-          </p>
-          <p className="flex items-center justify-center p-2 text-sm font-semibold border rounded-md border-slate-400">
-            Tempo:{" "}
-            <span className="w-10">
-              {start
-                ? ` ${Math.floor(clock / 60)
-                    .toString()
-                    .padStart(2, "0")}:${(clock % 60)
-                    .toString()
-                    .padStart(2, "0")}`
-                : "00:00"}
-            </span>
-          </p>
-        </div>
-      </div>
-      <div className="flex flex-wrap items-center h-full mx-auto sm:max-w-3xl 2xl:max-w-5xl justify-evenly">
-        {cards?.map((elem, index) => (
-          <CardButton
-            elem={elem}
-            index={index}
-            celebrate={celebrate}
-            getIt={getIt}
-            selected={selected}
-            selected2={selected2}
-            handleSelect={handleSelect}
-            playCards={playCards}
-            key={index}
-          />
-        ))}
-      </div>
-      <div id="buttons" className="flex justify-center w-full mb-2 ">
-        <button
-          onClick={handleShuffle}
-          className={`${isLoading ? `bg-green-500` : `bg-slate-300`} ${
-            start ? "hidden" : ""
-          } border w-40   border-slate-500 p-2 rounded-md`}
-        >
-          {" "}
-          {isLoading ? counter : `Start!`}
-        </button>
-        {start && (
-          <button
-            className="w-40 p-2 bg-red-400 border rounded-md border-slate-500"
-            onClick={handleNewGame}
-          >
-            Reset
-          </button>
-        )}
-      </div>
+    <div
+      className={CN(
+        "box-border flex flex-col items-center justify-between h-screen ",
+        { "cursor-wait": isLoading }
+      )}
+    >
+      <Header clock={clock} start={start} moves={moves} />
+      <CardsBox
+        celebrate={celebrate}
+        getIt={getIt}
+        handleSelect={handleSelect}
+        isLoading={isLoading}
+        cardsDictionary={cardsDictionary}
+        selected={selected}
+        selected2={selected2}
+        cards={cards}
+      />
+      <ControlButtons
+        counter={counter}
+        handleNewGame={handleNewGame}
+        handleShuffle={handleShuffle}
+        isLoading={isLoading}
+        start={start}
+      />
     </div>
   );
 };
