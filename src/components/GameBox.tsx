@@ -1,18 +1,17 @@
 "use client";
-import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import CN from "classnames";
-import BackCard from "./Shapes/BackCard";
 import "./microstyle.css";
-import CardButton from "@/components/ui/CardButton";
 import Header from "./ui/Header";
 import ControlButtons from "./ui/ControlButtons";
 import CardsBox from "./ui/CardsBox";
 import GameResult from "./ui/GameResult";
 
 const GameBox = () => {
-  const [cards, setCards] = useState();
-  const [cardsDictionary, setCardsDictionary] = useState({});
+  const [cards, setCards] = useState(Array<number>);
+  const [cardsDictionary, setCardsDictionary] = useState<{
+    [key: number]: boolean;
+  }>({});
   const [selected, setSelected] = useState(-1);
   const [selected2, setSelected2] = useState(-1);
   const [elem1, setElem1] = useState(-1);
@@ -27,14 +26,12 @@ const GameBox = () => {
   const [counter, setCounter] = useState(3);
   const [celebrate, setCelebrate] = useState(false);
 
-  let round = 0;
-
   const createDeck = () => {
     let newDeck = Array.from(
       { length: 10 },
       () => Math.floor(Math.random() * 990) + 1
     );
-    let newSet = {};
+    let newSet: { [key: number]: boolean } = {};
     newDeck.map((elem) => (newSet[elem] = true));
     newDeck = Array.from(new Set(newDeck));
     while (newDeck.length < 10) {
@@ -51,7 +48,7 @@ const GameBox = () => {
     setCards(createDeck());
   }, []);
 
-  const checkIsRight = (elem, index) => {
+  const checkIsRight = (elem: number, index: number) => {
     if (selected == index) {
       setSelected(-1);
       setSelected2(-1);
@@ -82,7 +79,8 @@ const GameBox = () => {
     }
   };
 
-  const handleSelect = (index, elem) => {
+  const handleSelect = (index: number, elem: number) => {
+    let round = 0;
     if (!start) {
       alert("Clique em Start! para começar.");
       return;
@@ -96,14 +94,12 @@ const GameBox = () => {
     if (selected === -1) {
       setSelected(index);
       setElem1(elem);
-      round++;
     } else {
       setSelected2(index);
       setElem2(elem);
       round = 2;
     }
     if (round == 2) {
-      round = 0;
       checkIsRight(elem, index);
     }
   };
