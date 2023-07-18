@@ -28,7 +28,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/components/GameBox.jsx"
+    "src/components/GameBox.tsx"
   ],
   "exclude": ["node_modules"]
 }
