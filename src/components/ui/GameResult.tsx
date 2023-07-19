@@ -20,7 +20,7 @@ const GameResult = ({
         <p>Parabéns, você conseguiu!</p>
         {clock != undefined && (
           <p className="text-center">
-            Levou {Math.floor(clock / 60)}m:{Math.floor(clock % 60)}s segundos e{" "}
+            Levou {Math.floor(clock / 60)}m:{Math.floor(clock % 60)}s e{" "}
             {moves} movimentos. <p>Consegue fazer melhor?</p>
           </p>
         )}
