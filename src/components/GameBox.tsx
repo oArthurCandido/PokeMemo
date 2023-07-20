@@ -29,17 +29,16 @@ const GameBox = () => {
   const createDeck = () => {
     let newDeck = Array.from(
       { length: 10 },
-      () => Math.floor(Math.random() * 990) + 1
+      () => Math.floor(Math.random() * 101) + 1
     );
-    let newSet: { [key: number]: boolean } = {};
-    newDeck.map((elem) => (newSet[elem] = true));
     newDeck = Array.from(new Set(newDeck));
     while (newDeck.length < 10) {
       newDeck.sort((a, b) => a - b);
-      newDeck.push(newDeck[newDeck.length - 1] + 1);
+      newDeck.push(Number(newDeck[newDeck.length - 1] + 1));
     }
+    let newSet: { [key: number]: boolean } = {};
+    newDeck.map((elem) => (newSet[elem] = true));
     newDeck = [...newDeck, ...newDeck];
-    setCards(newDeck);
     setCardsDictionary(newSet);
     return newDeck;
   };
