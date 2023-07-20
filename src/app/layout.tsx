@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import GoogleAnalytics from "@/lib/GoogleAnalytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="w-full h-full max-h-screen m-0">
+      {process.env.GA_TRACKING_ID && (
+        <GoogleAnalytics
+          GA_TRACKING_ID={process.env.GA_TRACKING_ID as string}
+        />
+      )}
       <body className={inter.className}>
         {children}
         <footer className="relative w-full ">
