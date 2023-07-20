@@ -69,12 +69,10 @@ const CardButton = ({
           />
         </div>
       ) : (
-        // <p className="p-2 text-black">X</p>
-        <img
+        <Image
           alt="pokemon image"
-          // width={800}
-          // height={800}
-
+          width={800}
+          height={800}
           className="object-contain max-w-full max-h-full rounded-md border-slate-500 dark:border-slate-400"
           src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${elem}.png`}
           // src={`https://rickandmortyapi.com/api/character/avatar/${elem}.jpeg`}
