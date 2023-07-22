@@ -16,15 +16,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="w-full h-full max-h-screen m-0">
+    <html lang="pt-br">
       {process.env.GA_TRACKING_ID && (
         <GoogleAnalytics
           GA_TRACKING_ID={process.env.GA_TRACKING_ID as string}
         />
       )}
-      <body className={inter.className}>
+      <body className={` ${inter.className}`}>
         {children}
-        <footer className="relative w-full ">
+        <footer className="absolute bottom-0 w-full ">
           <button className="absolute flex items-center self-end justify-center p-1 text-xs border rounded-full border-slate-500 bottom-1 right-2">
             <a href="https://arthurcandido.dev" target="_blank">
               Autor
