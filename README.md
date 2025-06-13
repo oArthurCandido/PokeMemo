@@ -4,7 +4,7 @@
 
 Desenvolvi esse projeto como forma de treinar desenvolvimento com Typescript. Todo o projeto é autoral, desde a escolha da stack e design até toda a execução, estratégia de controle de estados e estrutura de dados.
 
-### Acesse em: https://pokememoria.vercel.app/
+### Acesse em: https://pokememo.arthurcandido.dev
 
 
 
